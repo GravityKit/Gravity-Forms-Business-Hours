@@ -73,7 +73,7 @@ module.exports = function(grunt) {
 			transifex: 'tx pull -a',
 
 			// Create a ZIP file
-			zip: 'python /usr/bin/git-archive-all ../gravityview-featured-entries.zip'
+			zip: 'python /usr/bin/git-archive-all ../gravity-forms-business-hours.zip'
 		}
 	});
 
