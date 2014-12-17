@@ -258,8 +258,8 @@ if ( class_exists("GFForms") ) {
 						$datetime = sprintf( '%s %s-%s', substr($value['day'], 0, 2), $value['fromtime'], str_replace('+', '', $value['totime'] ) );
 						$content .= '
 						<div class="opening">
-							<time itemprop="openingHours" datetime="'.$datetime.'">
-							<strong rel="' . $value['daylabel'] . '">' . $value['daylabel'] . '</strong> <span>' . $value['fromtimelabel'] . '</span> - <span>' . $value['totimelabel'] . '</span>
+							<time itemprop="openingHoursSpecification" itemscope itemtype="http://schema.org/OpeningHoursSpecification" datetime="'.$datetime.'">
+							<strong itemprop="dayOfWeek" itemscope itemtype="http://schema.org/DayOfWeek" rel="' . $value['daylabel'] . '"><span itemprop="name" content="'. $value['day'] .'">' . $value['daylabel'] . '</span></strong> <span itemprop="opens" content="'.$value['fromtime'].'">' . $value['fromtimelabel'] . '</span> - <span itemprop="closes" content="'.$value['totime'].'">' . $value['totimelabel'] . '</span>
 							</time>
 						</div>';
 					}
