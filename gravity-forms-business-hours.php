@@ -372,7 +372,7 @@ if ( class_exists("GFForms") ) {
 			// Populate existing list items
 			if (!empty($list)) {
 				foreach ($list as $list_value) {
-					$list_string .= '<div class="business_hours_list_item"><strong>' . $list_value['day'] . '</strong>  <span>' . $list_value['fromtime'] . '</span> - <span>' . $list_value['totime'] . '</span><a href="" class="business_hours_remove_button"><i class="fa fa-times"></i></a></div>';
+					$list_string .= '<div class="business_hours_list_item"><strong>' . $list_value['day'] . '</strong>  <span>' . $list_value['fromtime'] . '</span> - <span>' . $list_value['totime'] . '</span><a href="" class="business_hours_remove_button"><i class="dashicons dashicons-dismiss"></i></a></div>';
 				}
 			}
 			$return .= '
