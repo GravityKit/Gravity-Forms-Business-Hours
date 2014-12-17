@@ -112,7 +112,7 @@ if ( class_exists("GFForms") ) {
 			add_action('gform_entries_field_value', array($this, 'business_hours_entries'), 10, 3);
 
 			add_action('gform_entry_field_value', array($this, 'display_entry_field_value'), 10, 4);
-			add_filter('gform_add_field_buttons', array($this, 'add_business_hours_field'));
+			add_filter('gform_add_field_buttons', array($this, 'add_field_button'));
 
 			add_action('gform_editor_js', array($this, 'editor_script'));
 
@@ -236,14 +236,22 @@ if ( class_exists("GFForms") ) {
 					$content = '<div class="business_hours_list_item">';
 
 					foreach ($list as $value) {
+
 						$filled_days[] = $value['day'];
+
 						$content .= '<div class="opening"><strong rel="' . $value['day'] . '">' . $value['day'] . '</strong> <span>' . $value['fromtime'] . '</span> - <span>' . $value['totime'] . '</span></div>';
 					}
 
-					$filled_days = array_unique($filled_days);
-					$empty_days = array_diff($days, $filled_days);
-					if (!empty($empty_days)) {
-						foreach ($empty_days as $value) {
+					// Array of days that are set
+					$filled_days = array_unique( $filled_days );
+
+					// Find what days aren't entered
+					$empty_days = array_diff( $days, $filled_days );
+
+					if( !empty( $empty_days ) ) {
+
+						// And set them as closed
+						foreach( $empty_days as $value ) {
 							$content .= '<div><strong>' . $value . '</strong> <span>' . __('Closed', 'gravity-forms-business-hours') . '</span></div>';
 						}
 					}
@@ -261,7 +269,7 @@ if ( class_exists("GFForms") ) {
 		 * Add a Business Hours field to the Advanced Fields group
 		 * @param [type] $field_groups [description]
 		 */
-		public function add_business_hours_field($field_groups) {
+		public function add_field_button($field_groups) {
 
 			foreach ($field_groups as &$group) {
 
