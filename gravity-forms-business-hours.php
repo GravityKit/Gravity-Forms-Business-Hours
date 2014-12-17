@@ -57,6 +57,7 @@ if ( class_exists("GFForms") ) {
 
 			add_filter('gform_field_validation', array( $this, 'validate'), 10, 4 );
 
+			add_filter('gform_field_input', array( $this, 'business_hours_field'), 10, 5 );
 
 		}
 
