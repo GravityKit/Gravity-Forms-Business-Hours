@@ -1,0 +1,70 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Gravity Forms Business Hours by GravityView\n"
+"POT-Creation-Date: 2014-12-17 00:07-0700\n"
+"PO-Revision-Date: 2014-12-17 00:07-0700\n"
+"Last-Translator: Katz Web Services, Inc. <support@katz.co>\n"
+"Language-Team: Katz Web Services, Inc. <support@katz.co>\n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.7.1\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: gravity-forms-business-hours.php:80
+msgid "This field is required."
+msgstr ""
+
+#: gravity-forms-business-hours.php:127 gravity-forms-business-hours.php:164
+#: gravity-forms-business-hours.php:265 gravity-forms-business-hours.php:285
+msgid "Business Hours"
+msgstr ""
+
+#: gravity-forms-business-hours.php:164
+msgid ""
+"This is a content placeholder. Preview this form to view the Business Hours "
+"field."
+msgstr ""
+
+#: gravity-forms-business-hours.php:240
+msgid "Closed"
+msgstr ""
+
+#: gravity-forms-business-hours.php:377
+msgid "Add Hours"
+msgstr ""
+
+#: gravity-forms-business-hours.php:462
+msgid "am"
+msgstr ""
+
+#: gravity-forms-business-hours.php:463
+msgid "pm"
+msgstr ""
+
+#: gravity-forms-business-hours.php:464
+msgid "midnight"
+msgstr ""
+
+#: gravity-forms-business-hours.php:465
+msgid "next day"
+msgstr ""
+
+#: gravity-forms-business-hours.php:466
+msgid "open"
+msgstr ""
+
+#: gravity-forms-business-hours.php:467
+msgid "noon"
+msgstr ""
+
+#: gravity-forms-business-hours.php:475
+msgid "This combination already exists"
+msgstr ""
