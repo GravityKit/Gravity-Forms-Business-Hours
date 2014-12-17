@@ -268,7 +268,7 @@ if ( class_exists("GFForms") ) {
 					$filled_days = array_unique( $filled_days );
 
 					// Find what days aren't entered
-					$empty_days = array_diff( $days, $filled_days );
+					$empty_days = array_diff( array_keys($days), $filled_days );
 
 					if( !empty( $empty_days ) ) {
 
