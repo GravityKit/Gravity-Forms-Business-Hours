@@ -178,17 +178,29 @@ if ( class_exists("GFForms") ) {
 		 */
 		private static function get_days() {
 
+			/**
+			 * Modify the date format for how the days appear, in PHP Date formatting
+			 * @param string $date PHP Date format
+			 */
+			$day_format = apply_filters( 'gravityforms_business_hours_day_format', 'D' );
+
 			$days = array(
-				date_i18n("D", strtotime('Monday this week')),
-				date_i18n("D", strtotime('Tuesday this week')),
-				date_i18n("D", strtotime('Wednesday this week')),
-				date_i18n("D", strtotime('Thursday this week')),
-				date_i18n("D", strtotime('Friday this week')),
-				date_i18n("D", strtotime('Saturday this week')),
-				date_i18n("D", strtotime('Sunday this week')),
+				'Monday' => date_i18n($day_format, strtotime('Monday this week')),
+				'Tuesday' => date_i18n($day_format, strtotime('Tuesday this week')),
+				'Wednesday' => date_i18n($day_format, strtotime('Wednesday this week')),
+				'Thursday' => date_i18n($day_format, strtotime('Thursday this week')),
+				'Friday' => date_i18n($day_format, strtotime('Friday this week')),
+				'Saturday' => date_i18n($day_format, strtotime('Saturday this week')),
+				'Sunday' => date_i18n($day_format, strtotime('Sunday this week')),
 			);
 
-			return apply_filters( 'gravityforms_business_hours_days', $days );
+			/**
+			 * Modify the day values. Don't change the keys!
+			 * @var array
+			 */
+			$days = apply_filters( 'gravityforms_business_hours_days', $days );
+
+			return $days;
 		}
 
 		/**
@@ -204,6 +216,10 @@ if ( class_exists("GFForms") ) {
 			$field = RGFormsModel::get_field($form, $field_id);
 
 			return self::display_entry_field_value( $value, $field, array(), $form );
+		}
+
+		public static function generate_schema() {
+
 		}
 
 		/**
@@ -236,7 +252,12 @@ if ( class_exists("GFForms") ) {
 
 						$filled_days[] = $value['day'];
 
-						$content .= '<div class="opening"><strong rel="' . $value['day'] . '">' . $value['day'] . '</strong> <span>' . $value['fromtime'] . '</span> - <span>' . $value['totime'] . '</span></div>';
+						$content .= '
+						<div class="opening">
+							<time itemprop="openingHours" datetime="Tu,Th 16:00-20:00">
+							<strong rel="' . $value['daylabel'] . '">' . $value['daylabel'] . '</strong> <span>' . $value['fromtimelabel'] . '</span> - <span>' . $value['totimelabel'] . '</span>
+							</time>
+						</div>';
 					}
 
 					// Array of days that are set
@@ -290,12 +311,12 @@ if ( class_exists("GFForms") ) {
 		 */
 		public function set_defaults() {
 			?>
-            //this hook is fired in the middle of a switch statement,
-            //so we need to add a case for our new field type
-            case "business_hours" :
-            	field.inputs = null;
-                field.label = "<?php echo esc_js( __('Business Hours', 'gravity-forms-business-hours') ); ?>"; //setting the default field label
-            break;
+			//this hook is fired in the middle of a switch statement,
+			//so we need to add a case for our new field type
+			case "business_hours" :
+				field.inputs = null;
+				field.label = "<?php echo esc_js( __('Business Hours', 'gravity-forms-business-hours') ); ?>"; //setting the default field label
+			break;
 		<?php
 		}
 
@@ -306,8 +327,8 @@ if ( class_exists("GFForms") ) {
 		public function editor_script() {
 			?>
 			<script type='text/javascript'>
-                fieldSettings['business_hours'] = ".label_setting, .visibility_setting, .admin_label_setting, .rules_setting, .description_setting, .conditional_logic_field_setting, .css_class_setting";
-            </script>
+				fieldSettings['business_hours'] = ".label_setting, .visibility_setting, .admin_label_setting, .rules_setting, .description_setting, .conditional_logic_field_setting, .css_class_setting";
+			</script>
 		<?php
 		}
 
@@ -380,23 +401,151 @@ if ( class_exists("GFForms") ) {
 			// Populate existing list items
 			if (!empty($list)) {
 				foreach ($list as $list_value) {
-					$list_string .= '<div class="business_hours_list_item"><strong>' . $list_value['day'] . '</strong>  <span>' . $list_value['fromtime'] . '</span> - <span>' . $list_value['totime'] . '</span><a href="" class="business_hours_remove_button"><i class="dashicons dashicons-dismiss"></i></a></div>';
+					$list_string .= '<div class="business_hours_list_item"><strong>' . $list_value['daylabel'] . '</strong>  <span>' . $list_value['fromtimelabel'] . '</span> - <span>' . $list_value['totimelabel'] . '</span><a href="" class="business_hours_remove_button"><i class="dashicons dashicons-dismiss"></i></a></div>';
 				}
 			}
 			$return .= '
 				<div rel="business_hours_' . $field['id'] . '" class="business_hours field_setting business_hours_item" >
 					<input type="hidden" name="input_' . $field['id'] . '" value=\'' . json_encode( $list ) . '\' />
-					    <div class="business_hours_list">' . $list_string . '</div>
+						<div class="business_hours_list">' . $list_string . '</div>
 					   <div class="business_hours_add_form">
-					       <select class="item_day"></select>
-					       <select class="item_fromtime"></select>
-					       <select class="item_totime"></select>
-					       <a href="#" class="button gform_button business_hours_add_button"><i class="dashicons dashicons-plus-alt"></i> ' . __('Add Hours', 'gravity-forms-business-hours') . '</a>
+							';
+			$return .= self::get_day_select();
+
+			/**
+			 * Change the default start time.
+			 * @param string $time Time in 'H:i' format
+			 */
+			$default_start_time = apply_filters( 'gravityforms_business_hours_default_start_time', '09:00' );
+
+			/**
+			 * Change the default end time
+			 * @param string $time Time in 'H:i' format
+			 */
+			$default_end_time = apply_filters( 'gravityforms_business_hours_default_start_time', '17:00' );
+
+			$return .= self::get_times_select('item_fromtime', $default_start_time, false);
+			$return .= self::get_times_select('item_totime', $default_end_time, true);
+
+			$return .= '<a href="#" class="button gform_button business_hours_add_button"><i class="dashicons dashicons-plus-alt"></i> ' . __('Add Hours', 'gravity-forms-business-hours') . '</a>
 					   </div>
-                </div>
+				</div>
 			';
 
 			return $return;
+		}
+
+		/**
+		 * Generate the HTML for the times select
+		 *
+		 * @param string $class Class for the select input
+		 * @param string $default Default value
+		 * @param boolean $with_after_midnight Include the hours after midnight of the next day?
+		 *
+		 * @return string HTML <select> of time options
+		 */
+		static function get_times_select( $class = 'item_fromtime', $default = '', $with_after_midnight = false ) {
+
+			$output_times = self::get_times( $with_after_midnight );
+
+			$output = '<select class="'.sanitize_html_class( $class ).'">';
+
+			foreach( $output_times as $value => $label ) {
+				$selected = selected( $default, $value, false );
+
+				$output .= '<option value="' . esc_attr( $value ) .'"'.$selected.'>' . $label . '</option>';
+			}
+
+			$output .= '</select>';
+
+			return $output;
+		}
+
+		/**
+		 * Generate array of times with key in `H:i` format and after-midnight in `+H:i` format
+		 *
+		 * @param  boolean $with_after_midnight Include times for next day
+		 * @return [type]                       [description]
+		 */
+		static function get_times( $with_after_midnight = false ) {
+
+
+			$key_format = 'H:i';
+
+			/**
+			 * Modify the time format for the displayed value
+			 * @param string
+			 */
+			$value_format = apply_filters( 'gravityforms_business_hours_time_format', 'g:i a' );
+
+			$starttime = '00:00';
+			$time = new DateTime( $starttime );
+
+			/**
+			 * Time interval for the dropdown options
+			 * @var int
+			 */
+			$interval_minutes = apply_filters( 'gravityforms_business_hours_interval', 30 );
+			$interval_minutes = intval( $interval_minutes );
+			$interval = new DateInterval('PT'.$interval_minutes.'M');
+
+			$temptime = '';
+
+			$times = array();
+
+			do {
+
+			   $key = $time->format( $key_format );
+
+			   // 12:30 am
+			   $value = $time->format( $value_format );
+
+			   $times[ $key ] = $value;
+
+			   // Increase by 30 minute intervals
+			   $time->add($interval);
+
+			   $temptime = $time->format( $key_format );
+
+			} while( $temptime !== $starttime );
+
+			// Build additional times for the next day closing times
+			if( $with_after_midnight ) {
+
+				$next_day = __('next day', 'gravity-forms-business-hours');
+
+				foreach( $times as $key => $time ) {
+
+					$times[ '+'.$key ] = sprintf( '%s (%s)', $time, $next_day );
+
+					// Only show "Next day" times until 7am
+					if( $key === '07:00' ) {
+						break;
+					}
+				}
+
+			}
+
+			return $times;
+		}
+
+		/**
+		 * Build a select field with the full name of the day as the value and abreviation as the label
+		 * @return string HTML <select> field
+		 */
+		static function get_day_select() {
+
+			$output = '<select class="item_day">';
+
+			$days = self::get_days();
+
+			foreach ($days as $key => $value) {
+				$output .= '<option value="'.esc_attr( $key ).'">'.esc_html( $value ).'</option>';
+			}
+
+			$output .= '</select>';
+
+			return $output;
 		}
 
 		/**
@@ -479,16 +628,15 @@ if ( class_exists("GFForms") ) {
 				'am' => __('am', 'gravity-forms-business-hours'),
 				'pm' => __('pm', 'gravity-forms-business-hours'),
 				'midnight' => __('midnight', 'gravity-forms-business-hours'),
-				'nextDay' => __('next day', 'gravity-forms-business-hours'),
 				'open' => __('open', 'gravity-forms-business-hours'),
 				'noon' => __('noon', 'gravity-forms-business-hours'),
-				'day_1' => $days[0],
-				'day_2' => $days[1],
-				'day_3' => $days[2],
-				'day_4' => $days[3],
-				'day_5' => $days[4],
-				'day_6' => $days[5],
-				'day_7' => $days[6],
+				'day_1' => $days['Monday'],
+				'day_2' => $days['Tuesday'],
+				'day_3' => $days['Wednesday'],
+				'day_4' => $days['Thursday'],
+				'day_5' => $days['Friday'],
+				'day_6' => $days['Saturday'],
+				'day_7' => $days['Sunday'],
 				'already_exists' => __('This combination already exists', 'gravity-forms-business-hours'),
 			);
 

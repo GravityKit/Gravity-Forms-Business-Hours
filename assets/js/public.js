@@ -15,21 +15,10 @@
 		 * @type {Array}
 		 */
 		lists: [],
-		days: [
-			GFBusinessHours.day_1,
-			GFBusinessHours.day_2,
-			GFBusinessHours.day_3,
-			GFBusinessHours.day_4,
-			GFBusinessHours.day_5,
-			GFBusinessHours.day_6,
-			GFBusinessHours.day_7
-		],
 		business_hours_list: []
 	});
 
 	self.init = function() {
-
-		self.build_dropdowns();
 
 		self.build_lists();
 
@@ -87,8 +76,11 @@
 
 		var item = {
 			day: $parent.find('.item_day').val(),
+			daylabel: $parent.find('.item_day option:selected').text(),
 			fromtime: $parent.find('.item_fromtime').val(),
-			totime: $parent.find('.item_totime').val()
+			fromtimelabel: $parent.find('.item_fromtime option:selected').text(),
+			totime: $parent.find('.item_totime').val(),
+			totimelabel: $parent.find('.item_totime option:selected').text(),
 		};
 
 		self.business_hours_list = self.get_list( field_id );
@@ -126,18 +118,19 @@
 
 		var $day_field = $parent.find('.item_day');
 
-		var day_index = self.days.indexOf( item.day );
+		// Currently selected option
+		var $currently_selected_option = $day_field.find('option:selected');
 
-		// If the day is Sunday, set the day picker to Monday
-		if( day_index === 6 ) {
-			day_index = 0;
-		}
-		// Otherwise, progress to next day in list
-		else {
-			day_index++
+		// Get the next option in the select
+		var $next_option = $currently_selected_option.next('option');
+
+		// If it doesn't exist, we're at the end of the week...cycle back around
+		if( $next_option.length === 0 ) {
+			$next_option = $day_field.find('option:first-child');
 		}
 
-		$day_field.val( self.days[ day_index ] );
+		// Update the value
+		$day_field.val( $next_option.val() );
 	};
 
 	/**
@@ -162,104 +155,6 @@
 
 			$(this).parents('.business_hours_list_item').remove();
 		}
-	};
-
-	/**
-	 * Populate self.times with array of time values lists
-	 */
-	self.get_times_array = function( with_after_midnight ) {
-
-		var times = [
-			"12:00 " + GFBusinessHours.am + " " + GFBusinessHours.midnight,
-			"12:30 " + GFBusinessHours.am,
-		];
-
-		for (var i = 1; i < 12; i++) {
-			times.push(i + ":00 " + GFBusinessHours.am);
-			times.push(i + ":30 " + GFBusinessHours.am);
-		}
-
-		// Add noon
-		times.push("12:00 " + GFBusinessHours.pm + " " + GFBusinessHours.noon);
-		times.push("12:30 " + GFBusinessHours.pm);
-
-		for (var i = 1; i < 12; i++) {
-			times.push(i + ":00 " + GFBusinessHours.pm);
-			times.push(i + ":30 " + GFBusinessHours.pm);
-		}
-
-		if( true === with_after_midnight ) {
-
-			times.push("12:00 " + GFBusinessHours.am + ' (' + GFBusinessHours.midnight + " " + GFBusinessHours.nextDay + ')');
-			times.push("12:30 " + GFBusinessHours.am + ' (' + GFBusinessHours.nextDay + ')' );
-
-			// Add another 7 hours after midnight
-			for (var i = 1; i < 7; i++) {
-				times.push(i + ":00 " + GFBusinessHours.am + ' (' + GFBusinessHours.nextDay + ')' );
-				times.push(i + ":30 " + GFBusinessHours.am + ' (' + GFBusinessHours.nextDay + ')' );
-			}
-		}
-
-		return times;
-	};
-
-	/**
-	 * Generate the HTML for the days select
-	 * @return {string} HTML of day options
-	 */
-	self.get_days_select = function() {
-
-		var output = [];
-
-		for (var i in self.days) {
-			output.push('<option value="' + self.days[i] + '">' + self.days[i] + '</option>');
-		}
-
-		return output.join('');
-	};
-
-	/**
-	 * Generate the HTML for the times select
-	 * @return {string} HTML of time options
-	 */
-	self.get_times_select = function( with_after_midnight ) {
-
-		var output_times = self.get_times_array( with_after_midnight );
-
-		var output = [];
-
-		for (var i in output_times ) {
-			output.push('<option value="' + output_times[i] + '">' + output_times[i] + '</option>');
-		}
-
-		return output.join('');
-
-	};
-
-	/**
-	 * Generate the <select>s for each field
-	 * @return {[type]} [description]
-	 */
-	self.build_dropdowns = function() {
-
-		$('.business_hours_item').each(function() {
-
-			$(this).find('.item_fromtime,.item_totime,.item_day').empty();
-
-			$(this).find('.item_day').append( self.get_days_select );
-
-			// Without after midnight
-			$(this).find('.item_fromtime').append( self.get_times_select( false ) );
-
-			// With after midnight
-			$(this).find('.item_totime').append( self.get_times_select( true ) );
-
-			// Set defaults
-			$('.item_fromtime').val('9:00 ' + GFBusinessHours.am);
-			$('.item_totime').val('5:00 ' + GFBusinessHours.pm);
-
-		});
-
 	};
 
 	/**
@@ -297,7 +192,7 @@
 		var items = [];
 
 		for (var i in self.business_hours_list) {
-			items.push('<div class="business_hours_list_item"><strong>' + self.business_hours_list[i].day + '</strong>  <span>' + self.business_hours_list[i].fromtime + '</span> - <span>' + self.business_hours_list[i].totime + '</span><a href="#" class="business_hours_remove_button"><i class="dashicons dashicons-dismiss"></i></a></div>');
+			items.push('<div class="business_hours_list_item"><strong>' + self.business_hours_list[i].daylabel + '</strong>  <span>' + self.business_hours_list[i].fromtimelabel + '</span> - <span>' + self.business_hours_list[i].totimelabel + '</span><a href="#" class="business_hours_remove_button"><i class="dashicons dashicons-dismiss"></i></a></div>');
 		}
 
 		// Then append it to the list
