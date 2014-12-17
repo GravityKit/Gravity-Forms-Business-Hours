@@ -53,9 +53,11 @@ if ( class_exists("GFForms") ) {
 
 			add_filter('gform_field_content', array($this, 'business_hours_field'), 10, 5);
 
-			add_filter("gform_save_field_value", array($this, "save_field_value"), 10, 4);
+			add_filter('gform_save_field_value', array($this, 'save_field_value'), 10, 4);
 
-			add_filter("gform_field_validation", array( $this, 'validate'), 10, 4 );
+			add_filter('gform_field_validation', array( $this, 'validate'), 10, 4 );
+
+
 		}
 
 		/**
@@ -216,15 +218,15 @@ if ( class_exists("GFForms") ) {
 		 */
 		public static function display_entry_field_value($value, $field, $lead = array(), $form = array() ) {
 
-			$days = self::get_days();
-
-			$filled_days = array();
-
 			$return = $value;
 
 			if ($field['type'] === 'business_hours') {
 
 				$content = '';
+
+				$days = self::get_days();
+
+				$filled_days = array();
 
 				$list = self::get_list_from_value( $value );
 
