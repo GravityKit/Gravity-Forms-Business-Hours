@@ -35,6 +35,9 @@
 
 		self.setup_bindings();
 
+		// Set the initial disabled items in the time picker
+		$('.item_fromtime').trigger('change');
+
 	};
 
 	/**
@@ -47,9 +50,6 @@
 
 		$(document).on('click', '.business_hours_add_button', self.click_add_button );
 
-		/**
-		 * detecting change on start time list & disabling ealier end times
-		 */
 		$(document).on('change', '.item_fromtime', self.time_change );
 	};
 
