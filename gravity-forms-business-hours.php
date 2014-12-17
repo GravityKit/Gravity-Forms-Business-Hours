@@ -218,10 +218,6 @@ if ( class_exists("GFForms") ) {
 			return self::display_entry_field_value( $value, $field, array(), $form );
 		}
 
-		public static function generate_schema() {
-
-		}
-
 		/**
 		 * Populate value for business hours field on entry page
 		 * @param  [type] $value [description]
@@ -246,15 +242,23 @@ if ( class_exists("GFForms") ) {
 
 				if (!empty($list) && is_array($list)) {
 
-					$content = '<div class="business_hours_list_item">';
+					/**
+					 * @link http://schema.org/LocalBusiness
+					 */
+					$content = '<div class="business_hours_list_item" itemscope itemtype="http://schema.org/LocalBusiness">';
 
 					foreach ($list as $value) {
 
 						$filled_days[] = $value['day'];
 
+						/**
+						 * Generate schema.org markup
+						 * @link http://schema.org/openingHours
+						 */
+						$datetime = sprintf( '%s %s-%s', substr($value['day'], 0, 2), $value['fromtime'], str_replace('+', '', $value['totime'] ) );
 						$content .= '
 						<div class="opening">
-							<time itemprop="openingHours" datetime="Tu,Th 16:00-20:00">
+							<time itemprop="openingHours" datetime="'.$datetime.'">
 							<strong rel="' . $value['daylabel'] . '">' . $value['daylabel'] . '</strong> <span>' . $value['fromtimelabel'] . '</span> - <span>' . $value['totimelabel'] . '</span>
 							</time>
 						</div>';
