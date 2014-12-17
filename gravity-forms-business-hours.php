@@ -299,9 +299,14 @@ if ( class_exists("GFForms") ) {
 		<?php
 		}
 
+		/**
+		 * Convert the field value into an array of days
+		 * @param  string $value Value of the field
+		 * @return array|NULL        NULL if not valid or empty; array if exists and is JSON
+		 */
 		public static function get_list_from_value( $value ) {
 
-			$list = json_decode( $value, true );
+			$list = json_decode( html_entity_decode( $value ), true );
 
 			// Sometimes it's double-encoded
 			if( is_string( $list ) ) {
