@@ -51,14 +51,11 @@ if ( class_exists("GFForms") ) {
 
 			add_action('gform_entry_field_value', array($this, 'display_entry_field_value'), 10, 4);
 
-			add_filter('gform_field_content', array($this, 'business_hours_field'), 10, 5);
-
 			add_filter('gform_save_field_value', array($this, 'save_field_value'), 10, 4);
 
 			add_filter('gform_field_validation', array( $this, 'validate'), 10, 4 );
 
 			add_filter('gform_field_input', array( $this, 'business_hours_field'), 10, 5 );
-
 		}
 
 		/**
