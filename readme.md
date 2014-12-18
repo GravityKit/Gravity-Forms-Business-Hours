@@ -44,6 +44,18 @@ These filters are available for code writers to modify the output:
 2. Activate the plugin
 3. In Edit Form, under Advanced Fields, click "Business Hours" to add the field to your form
 
+## Screenshots ##
+
+### 1. Business Hours in the Gravity Forms View Entry screen ###
+![Business Hours in the Gravity Forms View Entry screen](http://s.wordpress.org/extend/plugins/gravity-forms-business-hours-by-gravityview/screenshot-1.png)
+
+### 2. The Business Hours field ###
+![The Business Hours field](http://s.wordpress.org/extend/plugins/gravity-forms-business-hours-by-gravityview/screenshot-2.png)
+
+### 3. The Business Hours button in the Form Editor ###
+![The Business Hours button in the Form Editor](http://s.wordpress.org/extend/plugins/gravity-forms-business-hours-by-gravityview/screenshot-3.png)
+
+
 ## Changelog ##
 
 ### 1.2 on December 18 ###
