@@ -2,7 +2,7 @@
 /*
 Plugin Name: Gravity Forms Business Hours by GravityView
 Plugin URI: https://gravityview.co
-Description: Add a Business Hours field to your Gravity Forms form.
+Description: Add a Business Hours field to your Gravity Forms form. Brought to you by <a href="https://gravityview.co">GravityView</a>, the best plugin for displaying Gravity Forms entries.
 Version: 1.2
 Author: GravityView
 Author URI: https://gravityview.co
@@ -219,12 +219,13 @@ if ( class_exists("GFForms") ) {
 		}
 
 		/**
-		 * Populate value for business hours field on entry page
-		 * @param  [type] $value [description]
-		 * @param  [type] $field [description]
-		 * @param  array  $lead  [description]
-		 * @param  array  $form  [description]
-		 * @return [type]        [description]
+		 * Display the populated field value - not editable
+		 *
+		 * @param  mixed $value  Field value
+ 		 * @param  array $field  Gravity Forms field array
+ 		 * @param  array $lead  Gravity Forms entry array
+ 		 * @param  array $form   Gravity Forms form array
+ 		 * @return string        HTML output of the field
 		 */
 		public static function display_entry_field_value($value, $field, $lead = array(), $form = array() ) {
 
@@ -247,21 +248,51 @@ if ( class_exists("GFForms") ) {
 					 */
 					$content = '<div class="business_hours_list_item" itemscope itemtype="http://schema.org/LocalBusiness">';
 
-					foreach ($list as $value) {
+					foreach ($list as $time_span) {
 
-						$filled_days[] = $value['day'];
+						// Mark this day as open, so closed days can be processed below.
+						$filled_days[] = $time_span['day'];
 
 						/**
 						 * Generate schema.org markup
 						 * @link http://schema.org/openingHours
 						 */
-						$datetime = sprintf( '%s %s-%s', substr($value['day'], 0, 2), $value['fromtime'], str_replace('+', '', $value['totime'] ) );
-						$content .= '
-						<div class="opening">
-							<time itemprop="openingHoursSpecification" itemscope itemtype="http://schema.org/OpeningHoursSpecification" datetime="'.$datetime.'">
-							<strong itemprop="dayOfWeek" itemscope itemtype="http://schema.org/DayOfWeek" rel="' . $value['daylabel'] . '"><span itemprop="name" content="'. $value['day'] .'">' . $value['daylabel'] . '</span></strong> <span itemprop="opens" content="'.$value['fromtime'].'">' . $value['fromtimelabel'] . '</span> - <span itemprop="closes" content="'.$value['totime'].'">' . $value['totimelabel'] . '</span>
+						$datetime = sprintf( '%s %s-%s', substr($time_span['day'], 0, 2), $time_span['fromtime'], str_replace('+', '', $time_span['totime'] ) );
+
+						$output_template = '
+						<div class="business-hours business-hours-open">
+							<time itemprop="openingHoursSpecification" itemscope itemtype="http://schema.org/OpeningHoursSpecification" datetime="{{datetime}}">
+								<strong itemprop="dayOfWeek" itemscope itemtype="http://schema.org/DayOfWeek" rel="{{daylabel}}"><span itemprop="name" content="{{day}}">{{daylabel}}</span></strong>
+								<span itemprop="opens" content="{{fromtime}}">{{fromtimelabel}}</span> - <span itemprop="closes" content="{{totime}}">{{totimelabel}}</span>
+								{{open_label}}
 							</time>
 						</div>';
+
+						$replacements = array(
+							'{{datetime}}' => $datetime,
+							'{{day}}' => $time_span['day'],
+							'{{daylabel}}' => $time_span['daylabel'],
+							'{{fromtime}}' => $time_span['fromtime'],
+							'{{fromtimelabel}}' => $time_span['fromtimelabel'],
+							'{{totime}}' => $time_span['totime'],
+							'{{totimelabel}}' => $time_span['totimelabel'],
+							'{{open_label}}' => self::open_label( $time_span ),
+						);
+
+						/**
+						 * Modify the output of the open days. Data inside {{brackets}} will be replaced with the appropriate values.
+						 * @param string $output_template HTML code
+						 * @param  array $time_span description
+						 * @param  array $replacements Default values to replace with
+						 */
+						$output_template = apply_filters( 'gravityforms_business_hours_output_template', $output_template, $time_span, $replacements );
+
+						// Replace the keys ({{placeholders}}) with the data values
+						$item_output = str_replace( array_keys( $replacements ), array_values( $replacements), $output_template );
+
+						// Add to output
+						$content .= $item_output;
+
 					}
 
 					// Array of days that are set
@@ -273,8 +304,32 @@ if ( class_exists("GFForms") ) {
 					if( !empty( $empty_days ) ) {
 
 						// And set them as closed
-						foreach( $empty_days as $value ) {
-							$content .= '<div><strong>' . $value . '</strong> <span>' . __('Closed', 'gravity-forms-business-hours') . '</span></div>';
+						foreach( $empty_days as $day ) {
+
+							$output_template = '
+							<div class="business-hours business-hours-closed">
+								<strong>{{day}}</strong> <span>{{closed_label}}</span>
+							</div>';
+
+							$replacements = array(
+								'{{day}}' => $days[ $day ], // Custom value at key of full day name
+								'{{closed_label}}' => __('Closed', 'gravity-forms-business-hours'),
+							);
+
+							/**
+							 * Modify the output of the open days. Data inside {{brackets}} will be replaced with the appropriate values.
+							 * @param string $output_template HTML code
+							 * @param  string $day Day of the week value
+							 * @param  array $replacements Default values to replace with
+							 */
+							$output_template = apply_filters( 'gravityforms_business_hours_output_closed_template', $output_template, $days[ $day ], $replacements );
+
+							// Replace the keys ({{placeholders}}) with the data values
+							$item_output = str_replace( array_keys( $replacements ), array_values( $replacements), $output_template );
+
+							// Add to output
+							$content .= $item_output;
+
 						}
 					}
 
@@ -490,10 +545,19 @@ if ( class_exists("GFForms") ) {
 
 			// Populate existing list items
 			if (!empty($list)) {
+
 				foreach ($list as $list_value) {
-					$list_string .= '<div class="business_hours_list_item"><strong>' . $list_value['daylabel'] . '</strong>  <span>' . $list_value['fromtimelabel'] . '</span> - <span>' . $list_value['totimelabel'] . '</span><a href="" class="business_hours_remove_button"><i class="dashicons dashicons-dismiss"></i></a></div>';
+					$list_string .= '<div class="business_hours_list_item">';
+
+					$list_string .= '<strong>' . $list_value['daylabel'] . '</strong>';
+					$list_string .= '<span>' . $list_value['fromtimelabel'] . '</span>';
+					$list_string .= ' - ';
+					$list_string .= '<span>' . $list_value['totimelabel'] . '</span>';
+					$list_string .= '<a href="#" class="business_hours_remove_button"><i class="dashicons dashicons-dismiss"></i></a>';
+					$list_string .= '</div>';
 				}
 			}
+
 			$return .= '
 				<div rel="business_hours_' . $field['id'] . '" class="business_hours field_setting business_hours_item" >
 					<input type="hidden" name="input_' . $field['id'] . '" value=\'' . json_encode( $list ) . '\' />
@@ -572,7 +636,7 @@ if ( class_exists("GFForms") ) {
 			$time = new DateTime( $starttime );
 
 			/**
-			 * Time interval for the dropdown options
+			 * Time interval for the time dropdown options
 			 * @var int
 			 */
 			$interval_minutes = apply_filters( 'gravityforms_business_hours_interval', 30 );
@@ -666,10 +730,13 @@ if ( class_exists("GFForms") ) {
 		 * @return [type] [description]
 		 */
 		public function scripts() {
+
+			$script_debug = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
+
 			$scripts = array(
 				array(
 					"handle" => "business_hours_app",
-					"src" => $this->get_base_url() . "/assets/js/public.js",
+					"src" => $this->get_base_url() . "/assets/js/public{$script_debug}.js",
 					"version" => $this->_version,
 					"deps" => array("jquery"),
 					'callback' => array($this, 'localize_scripts'),
