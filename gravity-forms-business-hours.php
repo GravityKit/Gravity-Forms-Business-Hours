@@ -369,8 +369,8 @@ if ( class_exists("GFForms") ) {
 		static function sort_days( $a, $b ) {
 
 			// Generate a timestamp for the different options
-			$a_time = strtotime( $a['day'] .' this week '.$a['fromtime']);
-			$b_time = strtotime( $b['day'] .' this week '.$b['fromtime']);
+			$a_time = self::get_timestamp_from_time_span( $a );
+			$b_time = self::get_timestamp_from_time_span( $b );
 
 			// If same time, don't up/down sort
 			if( $a_time === $b_time ) {
@@ -382,7 +382,93 @@ if ( class_exists("GFForms") ) {
 		}
 
 		/**
-		 * Populate value for business hours field on frontend
+		 * Convert a timespan item into a timestamp for the blog's timezone
+		 * @param  array $time_span Timespan array with at least day, fromtime keys
+		 * @return float            Timestamp in float format, since that's what WP's `current_time()` returns
+		 */
+		public static function get_timestamp_from_time_span( $time_span, $from_or_to = 'from' ) {
+
+			// Only allow from or to
+			if( $from_or_to !== 'from' ) {
+				$from_or_to = 'to';
+			}
+
+			// `fromtime` or `totime`
+			$time_value = $time_span[$from_or_to.'time'];
+
+			// Full weekday in English
+			$day_value = $time_span['day'];
+
+			// After midnight!
+			// We add a day to the strtotime value
+			// And strip the + from the time to use the standard `H:i` value
+			if( substr( $time_value, 0, 1 ) === '+' ) {
+				$day_value .= ' +1 day';
+				$time_value = str_replace('+', '', $time_value);
+			}
+
+			// strtotime sentence
+			$str_to_time_string = $day_value .' this week '.$time_value;
+
+			// Blog timestamp
+			$current_time = current_time( 'timestamp' );
+
+			$timestamp = strtotime($str_to_time_string , $current_time );
+
+			return floatval( $timestamp );
+		}
+
+		/**
+		 * Is the business open now for the passed time span?
+		 * @param  array  $time_span Time span with `day` `fromtime` and `totime`
+		 * @return boolean            True: open; False: not open
+		 */
+		public static function is_open_now( $time_span ) {
+
+			// Blog timestamp
+			$current_time = current_time( 'timestamp' );
+
+			$from_time = self::get_timestamp_from_time_span( $time_span, 'from' );
+			$to_time = self::get_timestamp_from_time_span( $time_span, 'to' );
+
+			if( $current_time < $from_time ) {
+				return false;
+			}
+
+			if( $current_time > $to_time ) {
+				return false;
+			}
+
+			return true;
+		}
+
+		/**
+		 * Generate the Open Now lael
+		 * @param  array $time_span Time span array
+		 * @return string            HTML output, if open. Empty string if not.
+		 */
+		public static function open_label( $time_span ) {
+
+			$output = '';
+
+			if( self::is_open_now( $time_span ) ) {
+
+				$output = '<span class="open_label">';
+				$output .= esc_html__('Open Now', 'gravity-forms-business-hours');
+				$output .= '</span>';
+			}
+
+			/**
+			 * Modify the label for Open now
+			 * @var string
+			 */
+			$output = apply_filters('gravityforms_business_hours_open_label', $output, $time_span );
+
+			return $output;
+		}
+
+		/**
+		 * Display field to be shown in Form and when editing entry
 		 * @param  [type] $content [description]
 		 * @param  [type] $field   [description]
 		 * @param  [type] $value   [description]
@@ -598,23 +684,7 @@ if ( class_exists("GFForms") ) {
 							),
 						),
 					),
-				),
-				array(
-					"handle" => "business_hours_app_admin",
-					"src" => $this->get_base_url() . "/assets/js/admin.js",
-					"version" => $this->_version,
-					"deps" => array("jquery"),
-					'callback' => array($this, 'localize_scripts'),
-					"enqueue" => array(
-						array(
-							"admin_page" => array(
-								"entry_view",
-								"entry_detail"
-							),
-						),
-					),
-				),
-
+				)
 			);
 
 			return array_merge(parent::scripts(), $scripts);
@@ -629,18 +699,6 @@ if ( class_exists("GFForms") ) {
 			$days = self::get_days();
 
 			$strings = array(
-				'am' => __('am', 'gravity-forms-business-hours'),
-				'pm' => __('pm', 'gravity-forms-business-hours'),
-				'midnight' => __('midnight', 'gravity-forms-business-hours'),
-				'open' => __('open', 'gravity-forms-business-hours'),
-				'noon' => __('noon', 'gravity-forms-business-hours'),
-				'day_1' => $days['Monday'],
-				'day_2' => $days['Tuesday'],
-				'day_3' => $days['Wednesday'],
-				'day_4' => $days['Thursday'],
-				'day_5' => $days['Friday'],
-				'day_6' => $days['Saturday'],
-				'day_7' => $days['Sunday'],
 				'already_exists' => __('This combination already exists', 'gravity-forms-business-hours'),
 			);
 
