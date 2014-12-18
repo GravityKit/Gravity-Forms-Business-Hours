@@ -271,7 +271,7 @@ if ( class_exists("GFForms") ) {
 						$replacements = array(
 							'{{datetime}}' => $datetime,
 							'{{day}}' => $time_span['day'],
-							'{{daylabel}}' => $time_span['daylabel'],
+							'{{daylabel}}' => $days[$time_span['day']],
 							'{{fromtime}}' => $time_span['fromtime'],
 							'{{fromtimelabel}}' => $time_span['fromtimelabel'],
 							'{{totime}}' => $time_span['totime'],
