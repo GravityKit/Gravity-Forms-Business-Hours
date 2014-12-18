@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Gravity Forms Business Hours by GravityView\n"
-"POT-Creation-Date: 2014-12-17 00:07-0700\n"
-"PO-Revision-Date: 2014-12-17 00:07-0700\n"
+"POT-Creation-Date: 2014-12-18 14:26-0700\n"
+"PO-Revision-Date: 2014-12-18 14:26-0700\n"
 "Last-Translator: Katz Web Services, Inc. <support@katz.co>\n"
 "Language-Team: Katz Web Services, Inc. <support@katz.co>\n"
 "Language: en_US\n"
@@ -18,53 +18,37 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: gravity-forms-business-hours.php:80
+#: gravity-forms-business-hours.php:84
 msgid "This field is required."
 msgstr ""
 
-#: gravity-forms-business-hours.php:127 gravity-forms-business-hours.php:164
-#: gravity-forms-business-hours.php:265 gravity-forms-business-hours.php:285
+#: gravity-forms-business-hours.php:131 gravity-forms-business-hours.php:168
+#: gravity-forms-business-hours.php:357 gravity-forms-business-hours.php:377
 msgid "Business Hours"
 msgstr ""
 
-#: gravity-forms-business-hours.php:164
+#: gravity-forms-business-hours.php:168
 msgid ""
 "This is a content placeholder. Preview this form to view the Business Hours "
 "field."
 msgstr ""
 
-#: gravity-forms-business-hours.php:240
+#: gravity-forms-business-hours.php:316
 msgid "Closed"
 msgstr ""
 
-#: gravity-forms-business-hours.php:377
+#: gravity-forms-business-hours.php:512
+msgid "Open Now"
+msgstr ""
+
+#: gravity-forms-business-hours.php:596
 msgid "Add Hours"
 msgstr ""
 
-#: gravity-forms-business-hours.php:462
-msgid "am"
-msgstr ""
-
-#: gravity-forms-business-hours.php:463
-msgid "pm"
-msgstr ""
-
-#: gravity-forms-business-hours.php:464
-msgid "midnight"
-msgstr ""
-
-#: gravity-forms-business-hours.php:465
+#: gravity-forms-business-hours.php:681
 msgid "next day"
 msgstr ""
 
-#: gravity-forms-business-hours.php:466
-msgid "open"
-msgstr ""
-
-#: gravity-forms-business-hours.php:467
-msgid "noon"
-msgstr ""
-
-#: gravity-forms-business-hours.php:475
+#: gravity-forms-business-hours.php:781
 msgid "This combination already exists"
 msgstr ""

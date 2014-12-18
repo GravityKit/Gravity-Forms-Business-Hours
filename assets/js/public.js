@@ -11,10 +11,15 @@
 	var self = $.extend({
 
 		/**
-		 * Lists stored using the field ID as a key
+		 * Array of list arrays stored using the field ID as a key.
 		 * @type {Array}
 		 */
 		lists: [],
+
+		/**
+		 * The current list being worked on. Populated by self.get_list()
+		 * @type {Array}
+		 */
 		business_hours_list: []
 	});
 
