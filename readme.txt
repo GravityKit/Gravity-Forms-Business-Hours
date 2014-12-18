@@ -1,9 +1,9 @@
 === Gravity Forms Business Hours by GravityView ===
-Tags: gravityview
+Tags: gravityview,gravity forms, gravity,gravity form,business, hours, time, field, form
 Requires at least: 3.3
 Tested up to: 4.1
 Stable tag: trunk
-Contributors: katzwebservices
+Contributors: katzwebdesign,katzwebservices
 License: GPL 3 or higher
 Donate link: https://gravityview.co
 
