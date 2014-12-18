@@ -512,7 +512,7 @@ if ( class_exists("GFForms") ) {
 			 * Change the default end time
 			 * @param string $time Time in 'H:i' format
 			 */
-			$default_end_time = apply_filters( 'gravityforms_business_hours_default_start_time', '17:00' );
+			$default_end_time = apply_filters( 'gravityforms_business_hours_default_end_time', '17:00' );
 
 			$return .= self::get_times_select('item_fromtime', $default_start_time, false);
 			$return .= self::get_times_select('item_totime', $default_end_time, true);
