@@ -271,11 +271,11 @@ if ( class_exists("GFForms") ) {
 						$replacements = array(
 							'{{datetime}}' => $datetime,
 							'{{day}}' => $time_span['day'],
-							'{{daylabel}}' => $days[$time_span['day']],
+							'{{daylabel}}' => (isset( $days[$time_span['day']] ) ? $days[$time_span['day']] : $time_span['day'] ),
 							'{{fromtime}}' => $time_span['fromtime'],
-							'{{fromtimelabel}}' => $time_span['fromtimelabel'],
+							'{{fromtimelabel}}' => ( isset( $time_span['fromtimelabel'] ) ? $time_span['fromtimelabel'] : $time_span['fromtime'] ),
 							'{{totime}}' => $time_span['totime'],
-							'{{totimelabel}}' => $time_span['totimelabel'],
+							'{{totimelabel}}' => ( isset( $time_span['totimelabel'] ) ? $time_span['totimelabel'] : $time_span['totime'] ),
 							'{{open_label}}' => self::open_label( $time_span ),
 						);
 

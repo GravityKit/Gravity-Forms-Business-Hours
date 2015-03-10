@@ -54,6 +54,7 @@ These filters are available for code writers to modify the output:
 
 = 1.2.1 on March 10, 2015 =
 * Fixed: Business Hours field would be shown as Required in GravityView Edit Entry mode
+* Fixed: PHP notices
 
 = 1.2 on December 18 =
 
