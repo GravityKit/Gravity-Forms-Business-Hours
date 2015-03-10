@@ -77,7 +77,7 @@ if ( class_exists("GFForms") ) {
 
 			$json_value = json_decode( $value );
 
-			if( !empty( $field['isRequired'] ) && empty( $value ) || $value === 'null' || is_null( $json_value ) ) {
+			if( !empty( $field['isRequired'] ) && ( empty( $value ) || $value === 'null' || is_null( $json_value ) ) ) {
 
 				$return = array(
 					'is_valid'	=> false,

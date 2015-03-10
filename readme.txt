@@ -52,6 +52,9 @@ These filters are available for code writers to modify the output:
 
 == Changelog ==
 
+= 1.2.1 on March 10, 2015 =
+* Fixed: Business Hours field would be shown as Required in GravityView Edit Entry mode
+
 = 1.2 on December 18 =
 
 * Liftoff!
