@@ -3,14 +3,14 @@
 Plugin Name: Gravity Forms Business Hours by GravityView
 Plugin URI: https://gravityview.co
 Description: Add a Business Hours field to your Gravity Forms form. Brought to you by <a href="https://gravityview.co">GravityView</a>, the best plugin for displaying Gravity Forms entries.
-Version: 1.2
+Version: 1.2.1
 Author: GravityView
 Author URI: https://gravityview.co
 Text Domain: gravity-forms-business-hours
 Domain Path: /languages
 
 ------------------------------------------------------------------------
-Copyright 2014 Katz Web Services, Inc.
+Copyright 2015 Katz Web Services, Inc.
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -34,7 +34,7 @@ if ( class_exists("GFForms") ) {
 
 	class GFBusinessHours extends GFAddOn {
 
-		protected $_version = "1.2";
+		protected $_version = "1.2.1";
 		protected $_min_gravityforms_version = "1.7.9999";
 		protected $_slug = 'gravity-forms-business-hours';
 		protected $_path = 'gravity-forms-business-hours/gravity-forms-business-hours.php';
