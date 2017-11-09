@@ -1,5 +1,5 @@
 /**
- * Part of GravityView_Ratings_Reviews plugin. This script is enqueued when in
+ * Part of Gravity Forms Business Hours plugin. This script is enqueued when in
  * admin page.
  *
  * globals jQuery, GFBusinessHours
