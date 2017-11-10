@@ -64,4 +64,4 @@ These filters are available for code writers to modify the output:
 
 ### 1.2 on December 18 ###
 
-* Liftoff!
+* Liftoff!  
