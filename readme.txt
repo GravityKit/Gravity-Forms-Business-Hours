@@ -1,9 +1,9 @@
 === Gravity Forms Business Hours by GravityView ===
 Tags: gravityview,gravity forms, gravity,gravity form,business, hours, time, field, form
 Requires at least: 3.3
-Tested up to: 4.2
+Tested up to: 4.9
 Stable tag: trunk
-Contributors: katzwebdesign,katzwebservices
+Contributors: katzwebdesign,katzwebservices,gravityview
 License: GPL 3 or higher
 Donate link: https://gravityview.co
 
@@ -51,6 +51,13 @@ These filters are available for code writers to modify the output:
 3. The Business Hours button in the Form Editor
 
 == Changelog ==
+
+= 2.0 on November 8, 2017 =
+
+* Email notifications now show a list of hours instead of code
+* Improved output in GravityView by stripping extra whitespace
+* Major code rewrite for a better structure (using Gravity Forms `GF_Field` class)
+* Developers: All public methods have been removed. This is a breaking change, if you're building on top of Version 1.x
 
 = 1.2.1 on March 10, 2015 =
 * Fixed: Business Hours field would be shown as Required in GravityView Edit Entry mode
