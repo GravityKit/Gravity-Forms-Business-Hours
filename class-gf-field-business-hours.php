@@ -4,6 +4,9 @@ if ( ! class_exists( 'GF_Field' ) ) {
 	die();
 }
 
+/** @since 2.0.2 */
+define( 'GF_BUSINESS_HOURS_DEFAULT_LABEL', __('Business Hours', 'gravity-forms-business-hours') );
+
 /**
  * @since 2.0
  */
@@ -11,11 +14,11 @@ class GF_Field_Business_Hours extends GF_Field {
 
 	public $type = 'business_hours';
 
-	public function __construct( array $data = array() ) {
-		parent::__construct( $data );
+	public $label = GF_BUSINESS_HOURS_DEFAULT_LABEL;
 
-		// Default label
-		$this->label = __('Business Hours', 'gravity-forms-business-hours');
+	public function __construct( array $data = array() ) {
+
+		parent::__construct( $data );
 
 		$this->add_hooks();
 	}
