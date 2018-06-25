@@ -4,9 +4,6 @@ if ( ! class_exists( 'GF_Field' ) ) {
 	die();
 }
 
-/** @since 2.0.2 */
-define( 'GF_BUSINESS_HOURS_DEFAULT_LABEL', __('Business Hours', 'gravity-forms-business-hours') );
-
 /**
  * @since 2.0
  */
@@ -14,7 +11,7 @@ class GF_Field_Business_Hours extends GF_Field {
 
 	public $type = 'business_hours';
 
-	public $label = GF_BUSINESS_HOURS_DEFAULT_LABEL;
+	public $inputType = 'select';
 
 	public function __construct( array $data = array() ) {
 
@@ -34,6 +31,25 @@ class GF_Field_Business_Hours extends GF_Field {
 			add_filter( 'gravityforms_business_hours_output_template', 'gravityview_strip_whitespace' );
 		}
 
+		add_action( 'gform_editor_js_set_default_values', array( $this, 'js_set_default_values' ) );
+
+	}
+
+	/**
+	 * Set default label to "Business Hours"
+     *
+     * @since 2.1
+     *
+     * @return void
+	 */
+	function js_set_default_values() {
+		?>
+		case "<?php echo $this->type; ?>" :
+			field.label = <?php echo json_encode( esc_html__( 'Business Hours', 'gravity-forms-business-hours' ) ); ?>;
+			field.inputs = null;
+			field.clockType = '12';
+			break;
+		<?php
 	}
 
 	/**
