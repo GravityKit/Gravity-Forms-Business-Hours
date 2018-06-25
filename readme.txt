@@ -52,6 +52,7 @@ These filters are available for code writers to modify the output:
 
 == Changelog ==
 
+* Updated: Use site's time format setting for the time dropdowns (24-hour clock now supported)
 = 2.0.1 on February 26, 2018 =
 
 * Fixed: Network Activation on Multisite
