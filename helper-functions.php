@@ -17,7 +17,7 @@ function gf_business_hours_get_times( $with_after_midnight = false ) {
 	 * Modify the time format for the displayed value
 	 * @param string
 	 */
-	$value_format = apply_filters( 'gravityforms_business_hours_time_format', 'g:i a' );
+	$value_format = apply_filters( 'gravityforms_business_hours_time_format', get_option( 'time_format' ) );
 
 	$starttime = '00:00';
 	$time = new DateTime( $starttime );

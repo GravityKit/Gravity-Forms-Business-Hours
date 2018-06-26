@@ -2,7 +2,7 @@
 
 class GFBusinessHours extends GFAddOn {
 
-	protected $_version = "2.0";
+	protected $_version = "2.1";
 	protected $_min_gravityforms_version = "2.0";
 	protected $_slug = 'gravity-forms-business-hours';
 	protected $_path = 'gravity-forms-business-hours/gravity-forms-business-hours.php';
