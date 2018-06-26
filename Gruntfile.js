@@ -47,31 +47,8 @@ module.exports = function(grunt) {
 			},
 		},
 
-		dirs: {
-			lang: 'languages'
-		},
-
-		// Convert the .po files to .mo files
-		potomo: {
-			dist: {
-				options: {
-					poDel: false
-				},
-				files: [{
-					expand: true,
-					cwd: '<%= dirs.lang %>',
-					src: ['*.po'],
-					dest: '<%= dirs.lang %>',
-					ext: '.mo',
-					nonull: true
-				}]
-			}
-		},
-
 		// Pull in the latest translations
 		exec: {
-			transifex: 'tx pull -a',
-
 			// Create a ZIP file
 			zip: 'python /usr/bin/git-archive-all ../gravity-forms-business-hours.zip'
 		}
@@ -85,6 +62,6 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-exec');
 
 
-	grunt.registerTask( 'default', ['uglify','exec:transifex','potomo','wp_readme_to_markdown','watch'] );
+	grunt.registerTask( 'default', ['uglify','wp_readme_to_markdown','watch'] );
 
 };
