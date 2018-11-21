@@ -1,7 +1,7 @@
 === Gravity Forms Business Hours by GravityView ===
 Tags: gravityview,gravity forms, gravity,gravity form,business, hours, time, field, form
 Requires at least: 3.3
-Tested up to: 4.9.6
+Tested up to: 4.9.8
 Stable tag: trunk
 Contributors: katzwebdesign,katzwebservices,gravityview
 License: GPL 3 or higher
@@ -11,7 +11,7 @@ Add a Business Hours field to Gravity Forms.
 
 == Description ==
 
-> This plugin requires [Gravity Forms](https://rocketgenius.pxf.io/c/1210629/445235/7938), the best form plugin for Wordpress!
+> This plugin requires [Gravity Forms](https://rocketgenius.pxf.io/c/1210629/445235/7938), the best form plugin for WordPress!
 
 Add a Business Hours field to your Gravity Forms form.
 
@@ -53,6 +53,10 @@ These filters are available for code writers to modify the output:
 3. The Business Hours button in the Form Editor
 
 == Changelog ==
+
+= 2.1.1 on November 20, 2018 =
+
+* Fixed: Newly added fields not working properly
 
 = 2.1 on June 25, 2018 =
 
