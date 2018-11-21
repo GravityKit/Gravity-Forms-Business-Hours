@@ -11,7 +11,7 @@ class GF_Field_Business_Hours extends GF_Field {
 
 	public $type = 'business_hours';
 
-	public $inputType = 'select';
+	public $inputType = 'business_hours';
 
 	public function __construct( array $data = array() ) {
 
