@@ -1,7 +1,7 @@
 === Gravity Forms Business Hours by GravityView ===
 Tags: gravityview,gravity forms, gravity,gravity form,business, hours, time, field, form
 Requires at least: 3.3
-Tested up to: 4.9.8
+Tested up to: 5.0.2
 Stable tag: trunk
 Contributors: katzwebdesign,katzwebservices,gravityview
 License: GPL 3 or higher
@@ -53,6 +53,10 @@ These filters are available for code writers to modify the output:
 3. The Business Hours button in the Form Editor
 
 == Changelog ==
+
+= 2.1.2 on January 7, 2019 =
+
+* Fixed: Error when exporting forms in Gravity Forms that contain Business Hours fields
 
 = 2.1.1 on November 20, 2018 =
 
