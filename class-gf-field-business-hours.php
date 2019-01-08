@@ -13,8 +13,7 @@ class GF_Field_Business_Hours extends GF_Field {
 
 	public $inputType = 'business_hours';
 
-	public function __construct( array $data = array() ) {
-
+	public function __construct( $data = array() ) {
 		parent::__construct( $data );
 
 		$this->add_hooks();
