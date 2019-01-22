@@ -350,6 +350,8 @@ class GF_Field_Business_Hours extends GF_Field {
 			}
 
 			$content .= "</div>";
+
+			return $content;
 		}
 	}
 
