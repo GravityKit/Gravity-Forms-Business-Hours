@@ -3,7 +3,7 @@
 Plugin Name: Gravity Forms Business Hours by GravityView
 Plugin URI: https://gravityview.co
 Description: Add a Business Hours field to your Gravity Forms form. Brought to you by <a href="https://gravityview.co">GravityView</a>, the best plugin for displaying Gravity Forms entries.
-Version: 2.1.2
+Version: 2.1.3
 Author: GravityView
 Author URI: https://gravityview.co
 Text Domain: gravity-forms-business-hours
