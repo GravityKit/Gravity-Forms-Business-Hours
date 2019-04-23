@@ -251,9 +251,6 @@ class GF_Field_Business_Hours extends GF_Field {
 	 * @return string        HTML output of the field
 	 */
 	private function display_entry_field_value($value, $field, $lead = array(), $form = array() ) {
-
-		$content = $value;
-
 		$days = gf_business_hours_get_days();
 
 		$filled_days = array();
@@ -353,9 +350,9 @@ class GF_Field_Business_Hours extends GF_Field {
 			}
 
 			$content .= "</div>";
-		}
 
-		return $content;
+			return $content;
+		}
 	}
 
 	/**
