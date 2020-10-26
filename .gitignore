@@ -1,10 +1,6 @@
 *.sublime-project
 *.sublime-workspace
-composer.lock
-vendor/.git
-vendor/*/.git
 node_modules/*
 .sass-cache
 *.codekit
-.tx
 .idea
