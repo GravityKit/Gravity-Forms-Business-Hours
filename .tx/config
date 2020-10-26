@@ -1,0 +1,8 @@
+[main]
+host = https://www.transifex.com
+
+[gravity-forms-business-hours.gravity-forms-business-hours]
+file_filter = languages/gravity-forms-business-hours-<lang>.po
+source_lang = en
+type = PO
+lang_map = it: it_IT, bn: bn_BD, sv: sv_SE, nl: nl_NL, tr_TR: tr_TR, tr:tr
